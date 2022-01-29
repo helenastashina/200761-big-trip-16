@@ -1,4 +1,4 @@
-export const POINT_COUNT = 20;
+export const EVENT_COUNT = 20;
 export const TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
 export const DESTINATIONS = ['Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
 export const OFFERS = [
@@ -24,3 +24,12 @@ export const OFFERS = [
     'price': 40
   },
 ];
+export const DEFAULT_TYPE = 'Taxi';
+export const DEFAULT_PHOTO_SRC = 'http://picsum.photos/248/152?r=';
+export const DEFAULT_DESCRIPTION = 'Destination photo';
+export const MIN_PRICE = 100;
+export const MAX_PRICE = 10000;
+export const MAX_PHOTO_COUNT = 10;
+export const MAX_PHOTO_INDEX = 20;
+export const MIN_DAYS_GAP = 7;
+export const MAX_DAYS_GAP = 10;
