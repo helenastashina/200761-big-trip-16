@@ -10,29 +10,29 @@ export const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-export const getPointDateTime = (date) => dayjs(date).format('DD/MM/YY HH:MM');
+export const getEventDateTime = (date) => dayjs(date).format('DD/MM/YY HH:MM');
 
-export const humanizePointDate = (dueDate) => dayjs(dueDate).format('D MMMM');
+export const humanizeEventDate = (dueDate) => dayjs(dueDate).format('D MMMM');
 
-export const createPointEditTypesTemplate = (currentType) => TYPES.map((pointType) => `
+export const createEventEditTypesTemplate = (currentType) => TYPES.map((eventType) => `
         <div class="event__type-item">
           <input
-            id="event-type-${pointType.toLowerCase()}-1"
+            id="event-type-${eventType.toLowerCase()}-1"
             class="event__type-input  visually-hidden"
             type="radio"
             name="event-type"
-            value="${pointType}"
-            ${currentType === pointType ? 'checked' : ''}
+            value="${eventType}"
+            ${currentType === eventType ? 'checked' : ''}
           >
           <label
-            class="event__type-label  event__type-label--${pointType.toLowerCase()}"
-            for="event-type-${pointType.toLowerCase()}-1"
-          >${pointType}</label>
+            class="event__type-label  event__type-label--${eventType.toLowerCase()}"
+            for="event-type-${eventType.toLowerCase()}-1"
+          >${eventType}</label>
         </div>`).join('');
 
-export const createPointEditDestinationsTemplate = () => DESTINATIONS.map((destination) => ` <option value="${destination}"></option>`).join('');
+export const createEventEditDestinationsTemplate = () => DESTINATIONS.map((destination) => ` <option value="${destination}"></option>`).join('');
 
-export const createPointEditOffersTemplate = () => OFFERS.map((offer) => `
+export const createEventEditOffersTemplate = () => OFFERS.map((offer) => `
         <div class="event__offer-selector">
             <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${offer.id}">
             <label class="event__offer-label" for="event-offer-${offer.id}-1">
@@ -42,8 +42,8 @@ export const createPointEditOffersTemplate = () => OFFERS.map((offer) => `
             </label>
         </div>`).join('');
 
-export const createPointEditPhotosTemplate = (photos) => photos.map((photo) => `<img class="event__photo" src="${photo}" alt="Event photo">`).join('');
+export const createEventEditPhotosTemplate = (photos) => photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="Event photo">`).join('');
 
-export const isPointFuture = (date) => date && dayjs(date).isAfter(dayjs(), 'M');
+export const isEventFuture = (date) => date && dayjs(date).isAfter(dayjs(), 'M');
 
-export const isPointPast = (date) => date && dayjs(date).isBefore(dayjs(), 'M');
+export const isEventPast = (date) => date && dayjs(date).isBefore(dayjs(), 'M');

@@ -1,21 +1,24 @@
-import {getPointDateTime, createPointEditTypesTemplate, createPointEditDestinationsTemplate, createPointEditOffersTemplate} from '../utils.js';
+import {createElement} from '../render.js';
+import {DEFAULT_TYPE} from '../const.js';
+import {getEventDateTime, createEventEditTypesTemplate, createEventEditDestinationsTemplate, createEventEditOffersTemplate} from '../utils.js';
 import dayjs from 'dayjs';
 
-export const createEventEditTemplate = (point = {}) => {
+const createEventEditTemplate = (event = {}) => {
   const {
-    type = 'Taxi',
+    type = DEFAULT_TYPE,
     destination = null,
     offers = [],
     basePrice = 0,
     dateFrom = dayjs().format(),
     dateTo = dayjs().format(),
-  } = point;
+  } = event;
 
-  const typesTemplate = createPointEditTypesTemplate(type);
-  const destinationTemplate = createPointEditDestinationsTemplate();
-  const offersTemplate = createPointEditOffersTemplate(offers);
+  const typesTemplate = createEventEditTypesTemplate(type);
+  const destinationTemplate = createEventEditDestinationsTemplate();
+  const offersTemplate = createEventEditOffersTemplate(offers);
 
-  return `<form class="event event--edit" action="#" method="post">
+  return `<li class="trip-events__item">
+    <form class="event event--edit" action="#" method="post">
      <header class="event__header">
         <div class="event__type-wrapper">
            <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -41,10 +44,10 @@ export const createEventEditTemplate = (point = {}) => {
         </div>
         <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-1">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getPointDateTime(dateFrom)}">
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getEventDateTime(dateFrom)}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getPointDateTime(dateTo)}">
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getEventDateTime(dateTo)}">
         </div>
         <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">
@@ -72,5 +75,31 @@ export const createEventEditTemplate = (point = {}) => {
             <p class="event__destination-description">${destination.description}</p>
         </section>
      </section>
-  </form>`;
+  </form>
+</li>`;
 };
+
+export default class EventEditView {
+  #element = null;
+  #event = null;
+
+  constructor(event) {
+    this.#event = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createEventEditTemplate(this.#event);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}

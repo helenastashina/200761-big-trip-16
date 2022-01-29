@@ -1,7 +1,8 @@
+import {createElement} from '../render.js';
 import dayjs from 'dayjs';
 
-export const createEventPointTemplate = (point) => {
-  const {type, destination, offers, basePrice, dateFrom, dateTo, isFavorite} = point;
+const createEventEventTemplate = (event) => {
+  const {type, destination, offers, basePrice, dateFrom, dateTo, isFavorite} = event;
 
   const duration = dayjs(dateTo).diff(dayjs(dateFrom), 'minute');
 
@@ -18,12 +19,13 @@ export const createEventPointTemplate = (point) => {
   let offersList = '';
 
   if (offers.offers.length > 0) {
-    for (let i = 0; i < offers.offers.length; i++) {
-      offersList += createOfferItemTemplate(offers.offers[i]);
-    }
+    offers.offers.forEach((item) => {
+      offersList += createOfferItemTemplate(item);
+    });
   }
 
-  return `<div class="event">
+  return `<li class="trip-events__item">
+            <div class="event">
                 <time class="event__date" datetime="${dayjs(dateFrom).format('YYYY-MM-DD')}">${dayjs(dateFrom).format('MMM D')}</time>
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/check-in.png" alt="Event type icon">
@@ -52,5 +54,31 @@ export const createEventPointTemplate = (point) => {
                 <button class="event__rollup-btn" type="button">
                   <span class="visually-hidden">Open event</span>
                 </button>
-              </div>`;
+              </div>
+            </li>`;
 };
+
+export default class EventView {
+  #element = null;
+  #event = null;
+
+  constructor(event) {
+    this.#event = event;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createEventEventTemplate(this.#event);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}

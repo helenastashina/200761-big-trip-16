@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {TYPES, DESTINATIONS, OFFERS} from '../const.js';
+import {TYPES, DESTINATIONS, OFFERS, DEFAULT_PHOTO_SRC, DEFAULT_DESCRIPTION, MIN_PRICE, MAX_PRICE, MAX_PHOTO_COUNT, MAX_PHOTO_INDEX, MIN_DAYS_GAP, MAX_DAYS_GAP} from '../const.js';
 import {getRandomInteger} from '../utils.js';
 
 const generateDescription = () => {
@@ -23,8 +23,8 @@ const generateDescription = () => {
 };
 
 const generateDate = () => {
-  const minDaysGap = getRandomInteger(0, 7);
-  const maxDaysGap = getRandomInteger(minDaysGap, 10);
+  const minDaysGap = getRandomInteger(0, MIN_DAYS_GAP);
+  const maxDaysGap = getRandomInteger(minDaysGap, MAX_DAYS_GAP);
 
   return {
     dateFrom: dayjs().add(minDaysGap, 'day').format() ,
@@ -54,27 +54,27 @@ const getOffers = (offerType) => {
 };
 
 const getRandomPhoto = () => {
-  const randomIndex = getRandomInteger(0, 20);
+  const randomIndex = getRandomInteger(0, MAX_PHOTO_INDEX);
   return {
-    'src': `http://picsum.photos/248/152?r=${randomIndex}`,
-    'description': 'title'
+    'src': DEFAULT_PHOTO_SRC + randomIndex,
+    'description': DEFAULT_DESCRIPTION
   };
 };
 
-export const generatePoint = () => {
-  const pointType = getRandomType();
+export const generateEvent = () => {
+  const eventType = getRandomType();
   const randomDate = generateDate();
 
   return {
     id: 0,
-    type: pointType,
+    type: eventType,
     destination: {
       name: getRandomDestination(),
       description: generateDescription(),
-      pictures: Array.from({length: getRandomInteger(1, 10)}, getRandomPhoto),
+      pictures: Array.from({length: getRandomInteger(1, MAX_PHOTO_COUNT)}, getRandomPhoto),
     },
-    offers: getOffers(pointType),
-    basePrice: getRandomInteger(100, 10000),
+    offers: getOffers(eventType),
+    basePrice: getRandomInteger(MIN_PRICE, MAX_PRICE),
     dateFrom: randomDate.dateFrom,
     dateTo: randomDate.dateTo,
     isFavorite: Boolean(getRandomInteger(0, 1)),
