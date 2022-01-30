@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {DESTINATIONS, OFFERS, TYPES} from './const';
+import {DESTINATIONS, OFFERS, TYPES} from '../const';
 
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random

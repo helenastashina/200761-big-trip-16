@@ -1,4 +1,4 @@
-import {isEventFuture, isEventPast} from '../utils.js';
+import {isEventFuture, isEventPast} from '../utils/common.js';
 
 const eventToFilterMap = {
   Everything: (events) => events,

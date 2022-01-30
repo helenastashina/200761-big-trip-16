@@ -6,7 +6,7 @@ import EventEditView from './view/event-edit-view.js';
 import EventView from './view/event-view';
 import EventListView from './view/event-list-view';
 import NoEventView from './view/no-event-view';
-import {render, RenderPosition} from './render.js';
+import {render, replace, RenderPosition} from './utils/render.js';
 import {generateEvent} from './mock/event.js';
 import {generateFilter} from './mock/filter.js';
 import {EVENT_COUNT} from './const.js';
@@ -19,23 +19,23 @@ const siteHeaderElement = siteBodyElement.querySelector('.trip-controls__navigat
 const siteFilterElement = siteBodyElement.querySelector('.trip-controls__filters');
 const siteContentElement = siteBodyElement.querySelector('.trip-events');
 
-render(siteHeaderElement, new SiteMenuView().element, RenderPosition.BEFOREEND);
-render(siteFilterElement, new FilterView(filters).element, RenderPosition.BEFOREEND);
-render(siteContentElement, new SiteSortingView().element, RenderPosition.BEFOREEND);
+render(siteHeaderElement, new SiteMenuView(), RenderPosition.BEFOREEND);
+render(siteFilterElement, new FilterView(filters), RenderPosition.BEFOREEND);
+render(siteContentElement, new SiteSortingView(), RenderPosition.BEFOREEND);
 
 const eventListComponent = new EventListView();
-render(siteContentElement, eventListComponent.element, RenderPosition.BEFOREEND);
+render(siteContentElement, eventListComponent, RenderPosition.BEFOREEND);
 
 const renderEvent = (eventListElement, event) => {
   const eventComponent = new EventView(event);
   const eventEditComponent = new EventEditView(event);
 
   const replaceCardToForm = () => {
-    eventListElement.replaceChild(eventEditComponent.element, eventComponent.element);
+    replace(eventEditComponent, eventComponent);
   };
 
   const replaceFormToCard = () => {
-    eventListElement.replaceChild(eventComponent.element, eventEditComponent.element);
+    replace(eventComponent, eventEditComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -46,31 +46,29 @@ const renderEvent = (eventListElement, event) => {
     }
   };
 
-
-  eventComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+  eventComponent.setEditClickHandler(() => {
     replaceCardToForm();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  eventEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+  eventEditComponent.setEditClickHandler(() => {
     replaceFormToCard();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  eventEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  eventEditComponent.setFormSubmitHandler(() => {
     replaceFormToCard();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
 
-  render(eventListElement, eventComponent.element, RenderPosition.BEFOREEND);
+  render(eventListElement, eventComponent, RenderPosition.BEFOREEND);
 };
 
 if (events.length > 0) {
-  events.forEach((event) => renderEvent(eventListComponent.element, event));
+  events.forEach((event) => renderEvent(eventListComponent, event));
 } else {
-  render(eventListComponent.element, new NoEventView().element, RenderPosition.BEFOREEND);
+  render(eventListComponent, new NoEventView(), RenderPosition.BEFOREEND);
 }
 
-render(siteContentElement, new createEventCreateTemplate(events[0]).element, RenderPosition.BEFOREEND);
+render(siteContentElement, new createEventCreateTemplate(events[0]), RenderPosition.BEFOREEND);
