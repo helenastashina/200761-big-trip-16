@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from './abstract-view.js';
 
 import {
   getEventDateTime,
@@ -6,7 +6,7 @@ import {
   createEventEditDestinationsTemplate,
   createEventEditOffersTemplate,
   createEventEditPhotosTemplate,
-} from '../utils.js';
+} from '../utils/common.js';
 import dayjs from 'dayjs';
 
 const createEventCreateTemplate= (event = {}) => {
@@ -95,27 +95,15 @@ const createEventCreateTemplate= (event = {}) => {
             </li>`;
 };
 
-export default class EventCreateView {
-  #element = null;
+export default class EventCreateView extends AbstractView {
   #event = null;
 
   constructor(event) {
+    super();
     this.#event = event;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createEventCreateTemplate(this.#event);
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

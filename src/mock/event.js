@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {TYPES, DESTINATIONS, OFFERS, DEFAULT_PHOTO_SRC, DEFAULT_DESCRIPTION, MIN_PRICE, MAX_PRICE, MAX_PHOTO_COUNT, MAX_PHOTO_INDEX, MIN_DAYS_GAP, MAX_DAYS_GAP} from '../const.js';
-import {getRandomInteger} from '../utils.js';
+import {getRandomInteger} from '../utils/common.js';
 
 const generateDescription = () => {
   const descriptions = [
