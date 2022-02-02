@@ -203,7 +203,7 @@ export default class EventEditView extends SmartView {
   #priceInputHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      destination: evt.target.value,
+      basePrice: evt.target.value,
     }, true);
   }
 
@@ -246,7 +246,7 @@ export default class EventEditView extends SmartView {
 
 
   static parseEventToData = (event) => ({...event,
-    isDestination: event.destination,
+    isDestination: event.destination.description !== '',
   });
 
   static parseDataToEvent = (data) => {

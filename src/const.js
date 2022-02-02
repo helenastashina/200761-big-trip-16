@@ -102,4 +102,4 @@ export const Method = {
 };
 
 export const AUTHORIZATION = 'Basic ewrgrgrerehr324';
-export const END_POINT = 'https://16.ecmascript.pages.academy/big-trip/';
+export const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
