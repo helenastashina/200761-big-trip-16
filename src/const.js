@@ -97,7 +97,7 @@ export const Method = {
   GET: 'GET',
   PUT: 'PUT',
   POST: 'POST',
-  DELETE: 'DELETE'
+  DELETE: 'DELETE',
 };
 
 export const AUTHORIZATION = 'Basic ewrgrgrerehr324';
