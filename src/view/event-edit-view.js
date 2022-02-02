@@ -246,7 +246,7 @@ export default class EventEditView extends SmartView {
 
 
   static parseEventToData = (event) => ({...event,
-    isDestination: event.destination.description !== '',
+    isDestination: event.destination && event.destination.description !== '',
   });
 
   static parseDataToEvent = (data) => {

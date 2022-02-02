@@ -42,8 +42,6 @@ export const createEventEditOffersTemplate = () => OFFERS.map((offer) => `
 
 export const createEventEditPhotosTemplate = (photos) => photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="Event photo">`).join('');
 
-
-
 export const getTypesTimeDuration = (points, types) => {
   const itemsTimes = [];
   let time = 0;
@@ -88,3 +86,5 @@ export const getTypesCount = (points, types) => {
   });
   return itemsTypesCount;
 };
+
+export const convertArrayToObject = (array, key) => array.reduce((obj, item) => ({...obj,[item[key]]: item}),{});

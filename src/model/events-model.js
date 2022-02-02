@@ -1,9 +1,11 @@
 import AbstractObservable from '../utils/abstract-observable.js';
 import {UpdateType} from '../const.js';
+import {convertArrayToObject} from '../utils/common.js';
 
 export default class EventsModel extends AbstractObservable {
   #apiService = null;
   #events = [];
+  #destinations = {};
 
   constructor(apiService) {
     super();
@@ -13,7 +15,9 @@ export default class EventsModel extends AbstractObservable {
   init = async () => {
     try {
       const events = await this.#apiService.events;
+      const destinations = await this.#apiService.destinations;
       this.#events = events.map(this.#adaptToClient);
+      this.#destinations = convertArrayToObject(destinations, 'name');
     } catch(err) {
       this.#events = [];
     }
@@ -24,6 +28,10 @@ export default class EventsModel extends AbstractObservable {
 
   get events() {
     return this.#events;
+  }
+
+  get destinations() {
+    return this.#destinations;
   }
 
   updateEvent = async (updateType, update) => {
