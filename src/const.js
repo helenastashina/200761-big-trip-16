@@ -5,23 +5,22 @@ export const OFFERS = [
   {
     'id': 1,
     'title': 'Add luggage',
-    'price': 50
+    'price': 50,
   }, {
     'id': 2,
     'title': 'Switch to comfort',
-    'price': 80
+    'price': 80,
   },{
     'id': 3,
     'title': 'Add meal',
-    'price': 15
+    'price': 15,
   },{
     'id': 4,
     'title': 'Choose seats',
-    'price': 5
+    'price': 5,
   },{
     'id': 5,
     'title': 'Travel by train',
-    'price': 40
   },
 ];
 export const DEFAULT_TYPE = 'Taxi';
@@ -45,7 +44,7 @@ export const SortType = {
   SORT_EVENT: 'sort-event',
   SORT_DAY: 'sort-day',
   SORT_TIME: 'sort-time',
-  SORT_OFFER: 'sort-offer'
+  SORT_OFFER: 'sort-offer',
 };
 
 export const UserAction = {
