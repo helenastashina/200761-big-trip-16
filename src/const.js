@@ -33,3 +33,16 @@ export const MAX_PHOTO_COUNT = 10;
 export const MAX_PHOTO_INDEX = 20;
 export const MIN_DAYS_GAP = 7;
 export const MAX_DAYS_GAP = 10;
+export const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+export const SortType = {
+  DEFAULT: 'default',
+  SORT_PRICE: 'sort-price',
+  SORT_EVENT: 'sort-event',
+  SORT_DAY: 'sort-day',
+  SORT_TIME: 'sort-time',
+  SORT_OFFER: 'sort-offer'
+
+};
