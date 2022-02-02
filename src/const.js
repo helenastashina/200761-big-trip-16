@@ -33,6 +33,8 @@ export const MAX_PHOTO_COUNT = 10;
 export const MAX_PHOTO_INDEX = 20;
 export const MIN_DAYS_GAP = 7;
 export const MAX_DAYS_GAP = 10;
+export const BAR_HEIGHT = 55;
+
 export const Mode = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING',
@@ -44,5 +46,49 @@ export const SortType = {
   SORT_DAY: 'sort-day',
   SORT_TIME: 'sort-time',
   SORT_OFFER: 'sort-offer'
+};
 
+export const UserAction = {
+  UPDATE_EVENT: 'UPDATE_EVENT',
+  ADD_EVENT: 'ADD_EVENT',
+  DELETE_EVENT: 'DELETE_EVENT',
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
+export const FilterType = {
+  ALL: 'everything',
+  FUTURE: 'future',
+  PAST: 'past',
+};
+
+export const MenuItem = {
+  TABLE: 'Table',
+  STATS: 'Stats',
+  ADD_NEW_EVENT: 'New event',
+};
+
+export const ChartConfigs = {
+  TYPE: 'horizontalBar',
+  BACKGROUND_COLOR: '#ffffff',
+  BAR_HEIGHT: 55,
+  FONT_SIZE: 13,
+  TITLE_FONT_SIZE: 23,
+  MONEY_CHART_TITLE: 'MONEY',
+  TRANSPORT_CHART_TITLE: 'TYPE',
+  TIME_SPEND_CHART_TITLE: 'TIME-SPEND',
+  COLOR: '#000000',
+  BAR_THICKNESS: 44,
+  PADDING: 5,
+  MIN_BAR_LENGTH: 50,
+  PADDING_LEFT: 35,
+  ANCHOR_DATA: 'start',
+  ANCHOR_DATA_LABELS: 'end',
+  ANCHOR: 'end',
+  ALIGN: 'start',
+  POSITION: 'left',
 };

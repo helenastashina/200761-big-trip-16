@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {DESTINATIONS, OFFERS, TYPES} from '../const';
+import {DEFAULT_TYPE, DESTINATIONS, OFFERS, TYPES} from '../const';
 
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
@@ -44,50 +44,66 @@ export const createEventEditOffersTemplate = () => OFFERS.map((offer) => `
 
 export const createEventEditPhotosTemplate = (photos) => photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="Event photo">`).join('');
 
-export const isEventFuture = (date) => date && dayjs(date).isAfter(dayjs(), 'M');
+export const changeInMapTitleToKey = (mapList) => {
+  const newMapList = new Map();
+  mapList.forEach(({title, id, price}) => {
+    newMapList.set(title, {id, price});
+  });
 
-export const isEventPast = (date) => date && dayjs(date).isBefore(dayjs(), 'M');
-
-export const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
-
-  if (index === -1) {
-    return items;
-  }
-
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
+  return newMapList;
 };
 
-const getWeightForNullDate = (dateA, dateB) => {
-  if (dateA === null && dateB === null) {
-    return 0;
-  }
+export const getNewPoint = (destination, offers) => ({
+  basePrice: 0,
+  dateFrom: new Date(),
+  dateTo: new Date(),
+  destination,
+  offers,
+  type: DEFAULT_TYPE,
+  isFavorite: false,
+});
 
-  if (dateA === null) {
-    return 1;
-  }
-
-  if (dateB === null) {
-    return -1;
-  }
-
-  return null;
+export const getTypesTimeDuration = (points, types) => {
+  const itemsTimes = [];
+  let time = 0;
+  types.forEach((type) => {
+    points.forEach((point) => {
+      if (point.type === type) {
+        time += (dayjs(point.dateTo).diff(dayjs(point.dateFrom)));
+      }
+    });
+    itemsTimes.push(Math.round(time));
+    time = 0;
+  });
+  return itemsTimes;
 };
 
-export const sortEventByDay = (eventA, eventB) => {
-  const weight = getWeightForNullDate(eventA.dateFrom, eventB.dateFrom);
-
-  return weight ?? dayjs(eventA.dateFrom).diff(dayjs(eventB.dateFrom));
+export const getTypesMoney = (points, types) => {
+  const itemsCosts = [];
+  let sum = 0;
+  types.forEach((type) => {
+    points.forEach((point) => {
+      if (point.type === type) {
+        sum += point.basePrice;
+      }
+    });
+    itemsCosts.push(sum);
+    sum = 0;
+  });
+  return itemsCosts;
 };
 
-export const sortEventByPrice = (eventA, eventB) => eventA.basePrice - eventB.basePrice;
-
-export const sortEventByTime = (eventA, eventB) => {
-  const durationA = dayjs(eventA.dateTo).diff(dayjs(eventA.dateFrom), 'minute');
-  const durationB = dayjs(eventB.dateTo).diff(dayjs(eventB.dateFrom), 'minute');
-  return durationA - durationB;
+export const getTypesCount = (points, types) => {
+  const itemsTypesCount = [];
+  let count = 0;
+  types.forEach((type) => {
+    points.forEach((point) => {
+      if (point.type === type) {
+        count++;
+      }
+    });
+    itemsTypesCount.push(count);
+    count = 0;
+  });
+  return itemsTypesCount;
 };

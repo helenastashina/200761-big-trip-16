@@ -1,7 +1,8 @@
 import EventEditView from '../view/event-edit-view.js';
 import EventView from '../view/event-view.js';
 import {render, RenderPosition, replace, remove} from '../utils/render.js';
-import {Mode} from '../const';
+import {UserAction, UpdateType, Mode} from '../const.js';
+import {isPriceEqual} from '../utils/event.js';
 
 export default class EventPresenter {
   #eventListContainer = null;
@@ -32,6 +33,7 @@ export default class EventPresenter {
     this.#eventComponent.setEditClickHandler(this.#handleEditClick);
     this.#eventComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#eventEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
+    this.#eventEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     render(this.#eventListContainer, this.#eventComponent, RenderPosition.BEFOREEND);
 
@@ -59,6 +61,7 @@ export default class EventPresenter {
 
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#eventEditComponent.reset(this.#event);
       this.#replaceFormToCard();
     }
   }
@@ -79,6 +82,7 @@ export default class EventPresenter {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
+      this.#eventEditComponent.reset(this.#event);
       this.#replaceFormToCard();
     }
   }
@@ -87,12 +91,33 @@ export default class EventPresenter {
     this.#replaceCardToForm();
   }
 
-  #handleFavoriteClick = () => {
-    this.#changeData({...this.#event, isFavorite: !this.#event.isFavorite});
+  #handleDeleteClick = (task) => {
+    this.#changeData(
+      UserAction.DELETE_EVENT,
+      UpdateType.MINOR,
+      task,
+    );
   }
 
-  #handleFormSubmit = (event) => {
-    this.#changeData(event);
+  #handleFavoriteClick = () => {
+    this.#changeData(
+      UserAction.UPDATE_EVENT,
+      UpdateType.MINOR,
+      {...this.#event, isFavorite: !this.#event.isFavorite},
+    );
+  }
+
+  #handleFormSubmit = (update) => {
+    // Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию,
+    // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление
+    const isMinorUpdate =
+      !isPriceEqual(this.#event.basePrice, update.basePrice);
+
+    this.#changeData(
+      UserAction.UPDATE_EVENT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
+    );
     this.#replaceFormToCard();
   }
 }
