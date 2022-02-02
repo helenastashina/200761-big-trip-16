@@ -28,7 +28,7 @@ const createEventEditTemplate = (data) => {
   const destinationListTemplate = createEventEditDestinationsTemplate();
   const offersTemplate = createEventEditOffersTemplate(offers);
   const photosTemplate = (destination && destination.pictures) ? createEventEditPhotosTemplate(destination.pictures) : '';
-  const destinationTemplate = destination ?
+  const destinationTemplate = (destination && destination.description) ?
     `<section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">Destination</h3>
             <p class="event__destination-description">${destination.description}</p>
