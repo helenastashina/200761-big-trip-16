@@ -58,6 +58,7 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 export const FilterType = {
@@ -92,3 +93,13 @@ export const ChartConfigs = {
   ALIGN: 'start',
   POSITION: 'left',
 };
+
+export const Method = {
+  GET: 'GET',
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE'
+};
+
+export const AUTHORIZATION = 'Basic ewrgrgrerehr324';
+export const END_POINT = 'https://16.ecmascript.pages.academy/big-trip/';

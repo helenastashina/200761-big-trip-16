@@ -1,6 +1,7 @@
 import SiteSortingView from '../view/site-sorting-view.js';
 import EventListView from '../view/event-list-view.js';
 import NoEventView from '../view/no-event-view.js';
+import LoadingView from '../view/loading-view.js';
 import {remove, render, RenderPosition} from '../utils/render.js';
 import EventPresenter from './event-presenter.js';
 import EventNewPresenter from './event-new-presenter.js';
@@ -16,10 +17,12 @@ export default class TripPresenter {
   #sortComponent = null;
   #eventListComponent = new EventListView();
   #noEventComponent = null;
+  #loadingComponent = new LoadingView();
   #eventPresenter = new Map();
   #eventNewPresenter = null;
-  #currentSortType = SortType.DEFAULT;
+  #currentSortType = SortType.SORT_DAY;
   #filterType = FilterType.ALL;
+  #isLoading = true;
 
   constructor(tripContainer, eventsModel, filterModel) {
     this.#tripContainer = tripContainer;
@@ -103,6 +106,11 @@ export default class TripPresenter {
         this.#clearTrip({resetSortType: true});
         this.#renderTrip();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderTrip();
+        break;
     }
   }
 
@@ -134,6 +142,7 @@ export default class TripPresenter {
     this.#eventPresenter.forEach((presenter) => presenter.destroy());
     this.#eventPresenter.clear();
 
+    remove(this.#loadingComponent);
     remove(this.#sortComponent);
 
     if (this.#noEventComponent) {
@@ -149,12 +158,21 @@ export default class TripPresenter {
     events.forEach((event) => this.#renderEvent(event));
   }
 
+  #renderLoading = () => {
+    render(this.#tripContainer, this.#loadingComponent, RenderPosition.AFTERBEGIN);
+  }
+
   #renderNoEvents = () => {
     this.#noEventComponent = new NoEventView(this.#filterType);
     render(this.#tripContainer, this.#noEventComponent, RenderPosition.BEFOREEND);
   }
 
   #renderTrip = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     const events = this.events;
     const eventCount = events.length;
 

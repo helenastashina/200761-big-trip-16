@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {DEFAULT_TYPE, DESTINATIONS, OFFERS, TYPES} from '../const';
+import {DESTINATIONS, OFFERS, TYPES} from '../const';
 
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
@@ -11,8 +11,6 @@ export const getRandomInteger = (a = 0, b = 1) => {
 };
 
 export const getEventDateTime = (date) => dayjs(date).format('DD/MM/YY HH:MM');
-
-export const humanizeEventDate = (dueDate) => dayjs(dueDate).format('D MMMM');
 
 export const createEventEditTypesTemplate = (currentType) => TYPES.map((eventType) => `
         <div class="event__type-item">
@@ -44,24 +42,7 @@ export const createEventEditOffersTemplate = () => OFFERS.map((offer) => `
 
 export const createEventEditPhotosTemplate = (photos) => photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="Event photo">`).join('');
 
-export const changeInMapTitleToKey = (mapList) => {
-  const newMapList = new Map();
-  mapList.forEach(({title, id, price}) => {
-    newMapList.set(title, {id, price});
-  });
 
-  return newMapList;
-};
-
-export const getNewPoint = (destination, offers) => ({
-  basePrice: 0,
-  dateFrom: new Date(),
-  dateTo: new Date(),
-  destination,
-  offers,
-  type: DEFAULT_TYPE,
-  isFavorite: false,
-});
 
 export const getTypesTimeDuration = (points, types) => {
   const itemsTimes = [];

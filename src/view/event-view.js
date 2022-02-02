@@ -2,43 +2,48 @@ import he from 'he';
 import AbstractView from './abstract-view.js';
 import dayjs from 'dayjs';
 
+import {
+  convertDateHourseMinutes,
+  getDurationDate,
+  dateYearsMonthDay,
+  dateMonthDay,
+} from '../utils/date.js';
+
 const createEventEventTemplate = (event) => {
   const {type, destination, offers, basePrice, dateFrom, dateTo, isFavorite} = event;
-
-  const duration = dayjs(dateTo).diff(dayjs(dateFrom), 'minute');
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'
     : '';
 
   const createOfferItemTemplate = (offerItem) => `<li class="event__offer">
-      <span class="event__offer-title">${offerItem.title}</span>
+      <span class="event__offer-title">${he.encode(offerItem.title)}</span>
       &plus;&euro;&nbsp;
       <span class="event__offer-price">${offerItem.price}</span>
     </li>`;
 
   let offersList = '';
 
-  if (offers.offers.length > 0) {
-    offers.offers.forEach((item) => {
+  if (offers.length > 0) {
+    offers.forEach((item) => {
       offersList += createOfferItemTemplate(item);
     });
   }
 
   return `<li class="trip-events__item">
             <div class="event">
-                <time class="event__date" datetime="${dayjs(dateFrom).format('YYYY-MM-DD')}">${dayjs(dateFrom).format('MMM D')}</time>
+                <time class="event__date" datetime="${dateYearsMonthDay(dateTo)}">${dateMonthDay(dateTo)}</time>
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/check-in.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${type} ${destination.name}</h3>
+                <h3 class="event__title">${type} ${he.encode(destination.name)}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="${dayjs(dateFrom)}">${dayjs(dateFrom).format('HH:MM')}</time>
+                     <time class="event__start-time" datetime="${dateFrom}">${convertDateHourseMinutes(dateFrom)}</time>
                     &mdash;
-                    <time class="event__end-time" datetime="${dayjs(dateTo)}">${dayjs(dateTo).format('HH:MM')}</time>
+                    <time class="event__end-time" datetime="${dateTo}">${convertDateHourseMinutes(dateTo)}</time>
                   </p>
-                  <p class="event__duration">${duration}M</p>
+                  <p class="event__duration">${getDurationDate(dateFrom, dateTo)}</p>
                 </div>
                 <p class="event__price">
                   &euro;&nbsp;<span class="event__price-value">${basePrice}</span>

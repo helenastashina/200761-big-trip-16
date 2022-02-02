@@ -19,14 +19,25 @@ const BLANK_EVENT = {
   basePrice: '',
   dateFrom: dayjs().format(),
   dateTo: dayjs().format(),
+  isFavorite: false
 };
 
 const createEventEditTemplate = (data) => {
   const {type, destination, offers, basePrice, dateFrom, dateTo} = data;
   const typesTemplate = createEventEditTypesTemplate(type);
-  const destinationTemplate = createEventEditDestinationsTemplate();
+  const destinationListTemplate = createEventEditDestinationsTemplate();
   const offersTemplate = createEventEditOffersTemplate(offers);
-  const photosTemplate = destination.pictures ? createEventEditPhotosTemplate(destination.pictures) : [];
+  const photosTemplate = (destination && destination.pictures) ? createEventEditPhotosTemplate(destination.pictures) : '';
+  const destinationTemplate = destination ?
+    `<section class="event__section  event__section--destination">
+            <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+            <p class="event__destination-description">${destination.description}</p>
+            <div class="event__photos-container">
+                <div class="event__photos-tape">
+                    ${photosTemplate}
+                </div>
+            </div>
+        </section>` : '';
 
   return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -48,9 +59,9 @@ const createEventEditTemplate = (data) => {
             <label class="event__label  event__type-output" for="event-destination-1">
                 ${type}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination ? destination.name : ''}" list="destination-list-1">
             <datalist id="destination-list-1">
-               ${destinationTemplate}
+               ${destinationListTemplate}
             </datalist>
         </div>
         <div class="event__field-group  event__field-group--time">
@@ -80,16 +91,7 @@ const createEventEditTemplate = (data) => {
                 ${offersTemplate}
             </div>
         </section>
-
-        <section class="event__section  event__section--destination">
-            <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-            <p class="event__destination-description">${destination.description}</p>
-            <div class="event__photos-container">
-                <div class="event__photos-tape">
-                    ${photosTemplate}
-                </div>
-            </div>
-        </section>
+        ${destinationTemplate}
      </section>
   </form>
 </li>`;
