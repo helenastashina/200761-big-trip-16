@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {nanoid} from 'nanoid';
 import {TYPES, DESTINATIONS, OFFERS, DEFAULT_PHOTO_SRC, DEFAULT_DESCRIPTION, MIN_PRICE, MAX_PRICE, MAX_PHOTO_COUNT, MAX_PHOTO_INDEX, MIN_DAYS_GAP, MAX_DAYS_GAP} from '../const.js';
 import {getRandomInteger} from '../utils/common.js';
 
@@ -66,7 +67,7 @@ export const generateEvent = () => {
   const randomDate = generateDate();
 
   return {
-    id: 0,
+    id: nanoid(),
     type: eventType,
     destination: {
       name: getRandomDestination(),
