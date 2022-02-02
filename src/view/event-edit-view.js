@@ -1,3 +1,4 @@
+import he from 'he';
 import SmartView from './smart-view.js';
 import {DEFAULT_TYPE} from '../const.js';
 import {
@@ -15,7 +16,7 @@ const BLANK_EVENT = {
   type: DEFAULT_TYPE,
   destination: null,
   offers: [],
-  basePrice: 0,
+  basePrice: '',
   dateFrom: dayjs().format(),
   dateTo: dayjs().format(),
 };
@@ -140,11 +141,17 @@ export default class EventEditView extends SmartView {
     this.#setDateFromPicker();
     this.#setDateToPicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  }
+
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
   }
 
   #formSubmitHandler = (evt) => {
@@ -229,6 +236,12 @@ export default class EventEditView extends SmartView {
       destination: evt.target.value,
     });
   }
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(EventEditView.parseDataToEvent(this._data));
+  }
+
 
   static parseEventToData = (event) => ({...event,
     isDestination: event.destination,
