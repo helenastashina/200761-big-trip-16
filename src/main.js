@@ -1,6 +1,5 @@
 import SiteMenuView from './view/site-menu-view.js';
 import FilterView from './view/site-filter-view.js';
-import createEventCreateTemplate from './view/event-create-view';
 import {render, RenderPosition} from './utils/render.js';
 import {generateEvent} from './mock/event.js';
 import {generateFilter} from './mock/filter.js';
@@ -20,6 +19,3 @@ render(siteFilterElement, new FilterView(filters), RenderPosition.BEFOREEND);
 
 const tripPresenter = new TripPresenter(siteContentElement);
 tripPresenter.init(events);
-
-
-render(siteContentElement, new createEventCreateTemplate(events[0]), RenderPosition.BEFOREEND);
